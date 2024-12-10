@@ -14,11 +14,20 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+# backend_project/urls.py
 from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
+from django.conf import settings
+from django.conf.urls.static import static
+from accounts.views import CustomObtainAuthToken
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('leads.urls')),
-]
+    path('api/', include('accounts.urls')),
+    path('api/auth/token/', CustomObtainAuthToken.as_view(), name='api_token_auth'),
+    # path('api/auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    # path('api/auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    # path('api/auth/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
