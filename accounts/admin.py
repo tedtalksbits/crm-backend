@@ -28,7 +28,7 @@ class BotUserFilter(SimpleListFilter):
         return queryset
     
 class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'first_name', 'last_name', 'email', 'role')
+    list_display = ('username', 'first_name', 'last_name', 'email', 'role', 'company', 'is_active', 'created_at', 'updated_at')
     list_filter = ('role', 'is_active', 'company', BotUserFilter)
     search_fields = ('username', 'email', 'first_name', 'last_name')
     list_display_links = ('username', 'first_name', 'last_name')
@@ -62,9 +62,6 @@ class CompanyAdmin(admin.ModelAdmin):
             )
         return "No Logo"
 
-    
-    
-    
     
 admin.site.register(Company, CompanyAdmin)
 admin.site.register(CustomUser, CustomUserAdmin)

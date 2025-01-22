@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from rest_framework import status
+from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from .models import Company, CustomUser
@@ -7,7 +9,7 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from django.utils.timezone import now
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login, logout
 # Create your views here.
 # region Company
 
@@ -61,7 +63,8 @@ class CustomObtainAuthToken(ObtainAuthToken):
         if user:
             if not user.is_active:
                 return Response({"error": "Account is inactive."}, status=403)
-
+            # login 
+            login(request, user)
             # Update user-specific fields
             user.last_login_ip = client_ip
             user.failed_login_attempts = 0  # Reset failed login attempts
@@ -101,4 +104,14 @@ class CustomObtainAuthToken(ObtainAuthToken):
             ip = request.META.get('REMOTE_ADDR')
         return ip
 
+
+# endregion
+
+# region Logout
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        logout(request)
+        return Response({"message": "Logged out successfully."}, status=status.HTTP_200_OK)
 

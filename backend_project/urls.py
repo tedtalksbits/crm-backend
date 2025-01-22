@@ -27,7 +27,4 @@ urlpatterns = [
     path('api/', include('leads.urls')),
     path('api/', include('accounts.urls')),
     path('api/auth/token/', CustomObtainAuthToken.as_view(), name='api_token_auth'),
-    # path('api/auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    # path('api/auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    # path('api/auth/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
